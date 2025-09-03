@@ -1331,17 +1331,17 @@ private async handleVictorySubmit() {
       underline: true as unknown as boolean 
     };
 
-    const link1 = this.add.text(0, 0, "Placeholder Link 1", linkStyle)
+    const link1 = this.add.text(0, 0, "Front End Code", linkStyle)
       .setOrigin(0.5, 0)
       .setDepth(1602)
       .setInteractive({ useHandCursor: true });
-    link1.on("pointerup", () => { if (typeof window !== "undefined") window.open("https://example.com/one", "_blank"); });
+    link1.on("pointerup", () => { if (typeof window !== "undefined") window.open("https://github.com/RobStafford/Celeste-FE", "_blank"); });
 
-    const link2 = this.add.text(0, 0, "Placeholder Link 2", linkStyle)
+    const link2 = this.add.text(0, 0, "Backend Prototype (unused)", linkStyle)
       .setOrigin(0.5, 0)
       .setDepth(1602)
       .setInteractive({ useHandCursor: true });
-    link2.on("pointerup", () => { if (typeof window !== "undefined") window.open("https://example.com/two", "_blank"); });
+    link2.on("pointerup", () => { if (typeof window !== "undefined") window.open("https://github.com/RobStafford/Celeste-BE-prototype-", "_blank"); });
 
     this.aboutOkButton = this.add.rectangle(0, 0, 140, 44, 0x1f8cff, 1)
       .setStrokeStyle(2, 0xffffff, 0.8)
