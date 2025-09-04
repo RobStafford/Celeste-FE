@@ -741,6 +741,7 @@ class SpaceScene extends Phaser.Scene {
       .setStrokeStyle(2, 0xffffff, 0.8)
       .setDepth(1502)
       .setInteractive({ useHandCursor: true });
+
     this.okLabel = this.add.text(0, 0, "OK", {
       fontFamily: "Arial, Helvetica, sans-serif",
       fontSize: "20px",
@@ -815,7 +816,7 @@ class SpaceScene extends Phaser.Scene {
     this.scoresText.setPosition(0, y);
 
     // Button near bottom
-    const btnY = panelH / 2 - 34;
+    const btnY = panelH / 2;
     this.okButton!.setPosition(0, btnY);
     this.okLabel!.setPosition(0, btnY);
   }
@@ -1315,7 +1316,7 @@ private async handleVictorySubmit() {
     }).setOrigin(0.5).setDepth(1602);
 
     const body = this.add.text(0, 0,
-      "Celeste was built over 4 days. Protoyped in Express & SQLite. Implemented with TypeScript, Phaser3, Vite, Node.js, and DynamoDB. Hosted via CloudFront on Amazon Web Services.\n\n",
+      "Celeste was built over 4 days. Protoyped in Express & SQLite. Implemented with TypeScript, Phaser, Vite, Node.js, and DynamoDB. Hosted via CloudFront on Amazon Web Services.\n\nIf anyone reading this knows Vernor Vinge, please show him this game. I read a description of something similar in his novel The Peace War, and I always wanted to play it. So now I can. :-)",
       {
         fontFamily: "Arial, Helvetica, sans-serif",
         fontSize: "16px",
