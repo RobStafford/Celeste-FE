@@ -1,0 +1,1 @@
+export type Score = { player: string; score: number };
