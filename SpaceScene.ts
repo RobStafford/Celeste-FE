@@ -558,7 +558,6 @@ class SpaceScene extends Phaser.Scene {
           const theta = Math.atan2(this.ship.y - p.y, this.ship.x - p.x);
           this.landOnPlanet(p, theta);
 
-          // Victory condition
           if (p === this.targetPlanet) {
             this.showVictoryFlash();
             this.handleVictorySubmit();
@@ -651,7 +650,7 @@ class SpaceScene extends Phaser.Scene {
     // Restart ask
     this.time.delayedCall(3000, () => {
       if (!this.scene.isActive()) return;
-      if (!this.modalOpen) this.showRestartModal();
+      if (!this.modalOpen) this.showRestartModal('loss');
     });
   }
 
@@ -842,7 +841,30 @@ class SpaceScene extends Phaser.Scene {
     this.startBackdrop = undefined;
   }
 
-  private showRestartModal() {
+  private showRestartModal(outcome: 'victory' | 'loss' = 'loss') {
+
+    if (outcome === 'victory') {
+    const cx = this.scale.width / 2;
+    const cy = this.scale.height / 2;
+    for (let i = 0; i < 80; i++) {
+      const a = Phaser.Math.FloatBetween(0, Math.PI * 2);
+      const r = Phaser.Math.Between(80, 260);
+      const dot = this.add.image(cx, cy, "starDot")
+        .setDepth(1555)
+        .setScale(Phaser.Math.FloatBetween(1, 2))
+        .setTint(Phaser.Display.Color.RandomRGB().color)
+        .setBlendMode(Phaser.BlendModes.ADD);
+      this.tweens.add({
+        targets: dot,
+        x: cx + Math.cos(a) * r,
+        y: cy + Math.sin(a) * r,
+        alpha: 0,
+        duration: 1200 + Math.random() * 600,
+        ease: "Cubic.easeOut",
+        onComplete: () => dot.destroy()
+      });
+    }
+  }
     this.modalOpen = true;
 
     const { width, height } = this.scale;
@@ -853,17 +875,19 @@ class SpaceScene extends Phaser.Scene {
       .setDepth(1550);
     this.uiLayer.add(this.restartBackdrop);
 
-    const panel = this.add.rectangle(0, 0, 520, 220, 0x1a1d24, 0.95)
+    const panel = this.add.rectangle(0, 0, 520, 240, 0x1a1d24, 0.95)
       .setStrokeStyle(2, 0xffffff, 0.25)
       .setOrigin(0.5)
       .setDepth(1551);
 
-    const msg = this.add.text(0, 0, "Do you want to restart?", {
+    const outcomeMsg = outcome === 'victory' ? 'You won!' : 'You crashed, so sad.';
+    const msg = this.add.text(0, 0, `${outcomeMsg}\n\nDo you want to restart?`, {
       fontFamily: "Arial, Helvetica, sans-serif",
       fontSize: "22px",
       color: "#ffffff",
       stroke: "#000000",
       strokeThickness: 2,
+      align: "center",
       wordWrap: { width: 460 }
     }).setOrigin(0.5, 0.5).setDepth(1552);
 
@@ -888,12 +912,12 @@ class SpaceScene extends Phaser.Scene {
     }).setOrigin(0.5).setDepth(1553);
 
     this.yesButton.on("pointerover", () => this.yesButton!.setFillStyle(0x2a95ff, 1));
-    this.yesButton.on("pointerout", () => this.yesButton!.setFillStyle(0x1f8cff, 1));
-    this.yesButton.on("pointerup", () => this.restartExperience());
+    this.yesButton.on("pointerout",  () => this.yesButton!.setFillStyle(0x1f8cff, 1));
+    this.yesButton.on("pointerup",   () => this.restartExperience());
 
-    this.noButton.on("pointerover", () => this.noButton!.setFillStyle(0x434955, 1));
-    this.noButton.on("pointerout", () => this.noButton!.setFillStyle(0x363b45, 1));
-    this.noButton.on("pointerup", () => this.closeRestartModal());
+    this.noButton.on("pointerover",  () => this.noButton!.setFillStyle(0x434955, 1));
+    this.noButton.on("pointerout",   () => this.noButton!.setFillStyle(0x363b45, 1));
+    this.noButton.on("pointerup",    () => this.closeRestartModal());
 
     this.input.keyboard?.once("keydown-Y", () => this.restartExperience());
     this.input.keyboard?.once("keydown-N", () => this.closeRestartModal());
@@ -905,7 +929,9 @@ class SpaceScene extends Phaser.Scene {
     this.uiLayer.add(this.restartModal);
 
     this.layoutRestartModal();
-  }
+
+}
+
 
   private layoutRestartModal() {
     if (!this.restartModal || !this.restartBackdrop) return;
@@ -998,9 +1024,9 @@ class SpaceScene extends Phaser.Scene {
       }
 
       this.modalOpen = false;
-      // tiny delay so the toast can render
+
       this.time.delayedCall(300, () => {
-        if (!this.restartModal) this.showRestartModal();
+        if (!this.restartModal) this.showRestartModal('victory');
       });
       return;
     }
