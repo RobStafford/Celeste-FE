@@ -1,7 +1,3 @@
-// src/types/phaser-shim.d.ts
-// Minimal ambient typings for the pieces your helpers use.
-// This is TYPES ONLY; it does not import real Phaser or DOM.
-
 declare namespace Phaser {
   namespace Math {
     class Vector2 {
@@ -58,8 +54,6 @@ declare namespace Phaser {
   }
 }
 
-// Make `import 'phaser'` provide the same namespace.
-// Works with "esModuleInterop": true.
 declare module 'phaser' {
   export = Phaser;
 }
