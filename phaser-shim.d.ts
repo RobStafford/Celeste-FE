@@ -54,6 +54,8 @@ declare namespace Phaser {
   }
 }
 
+
 declare module 'phaser' {
-  export = Phaser;
+  export default Phaser;
+  export { Phaser };
 }
